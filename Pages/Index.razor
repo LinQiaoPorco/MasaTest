@@ -1,0 +1,69 @@
+﻿@page "/"
+
+<MTabs @bind-Value="tab"
+       AlignWithTitle
+       SliderColor="yellow">
+    @foreach (var item in items)
+    {
+        <MTab Value="item">
+            @item
+        </MTab>
+    }
+    </MTabs>
+
+    <MTabsItems @bind-Value="tab">
+        @foreach (var item in items)
+    {
+        <MTabItem Value="item">
+            <MRow>
+                @for (var i=0; i < 20; i++)
+                {
+                    var task = new TaskFormItem()
+                    {
+                        Id = i,
+                        TaskName = $"Task {i}",
+                        Result = Options[i % 3],
+                    };
+                    <MCol Class="col-2">
+                        <MRadioGroup @bind-Value="@task!.Result" Column Class="d-flex" Style="width:100%">
+                            <LabelContent>
+                                <div><strong>@task!.TaskName</strong></div>
+                            </LabelContent>
+                            <ChildContent>
+                                @foreach (string option in Options)
+                                {
+                                    <MRadio Label="@option" TValue="string" Value="option" Class="d-flex"></MRadio>
+                                }
+                            </ChildContent>
+                        </MRadioGroup>
+                    </MCol>
+                }
+            </MRow>
+        </MTabItem>
+    }
+    </MTabsItems>
+
+@code {
+    StringNumber tab;
+
+    List<string> items = new()
+    {
+        "web", "shopping", "videos", "images", "news",
+    };
+
+    string text = "L";
+    public TaskFormItem? Value = new TaskFormItem()
+    {
+        Id =1,
+        TaskName = "Task 1",
+        Result = "OK",
+    };
+    public string[] Options = new string[] { "OK", "NG", "N/A" };
+
+    public class TaskFormItem
+    {
+        public int Id { get; set; }
+        public string TaskName { get; set; } = null!;
+        public string? Result { get; set; }
+    }
+}
